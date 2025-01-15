@@ -62,3 +62,16 @@ class Company:
     def handle_application_review(self, event):
         status = "accepted" if event.payload['is_accepted'] else "rejected"
         print(f"Application for {event.payload['applicant_name']} for the position {event.payload['job_title']} is {status}.")
+
+tech_company = Company('Simsekler Inc.', 'Istanbul, CA', '1234567890')
+communication_queue.register_handler("application_submitted", tech_company.handle_application_submission)
+communication_queue.register_handler("application_reviewed", tech_company.handle_application_review)
+
+applicant1 = Applicant("Efe Berr", "efe.b@example.com", "555-1234")
+applicant2 = Applicant("Mehmet Akif", "mehmet.a@example.com", "555-5678")
+
+
+applicant1.apply_for_job("Software Engineer")
+applicant2.apply_for_job("Data Scientist")
+
+communication_queue.process_events()
